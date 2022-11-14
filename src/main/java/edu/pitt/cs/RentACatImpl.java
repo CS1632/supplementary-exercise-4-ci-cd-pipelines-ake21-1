@@ -19,7 +19,16 @@ public class RentACatImpl implements RentACat {
 
 	public boolean returnCat(int id) {
 		// TODO
-		return false;
+		Cat c = getCat(id);
+		if(c == null) { //if the cat doesn't exist, return false
+			return false;
+		}
+		if (catAvailable(id)==false){
+         c.returnCat();
+         return true;
+        }
+        return false;
+		
 	}
 
 	/**
@@ -34,6 +43,14 @@ public class RentACatImpl implements RentACat {
 
 	public boolean rentCat(int id) {
 		// TODO
+		Cat c = getCat(id);
+		if(c == null) { //if the cat doesn't exist, return false
+			return false;
+		}
+		if(!c.getRented()) { //if the cat is already rented, return false
+			c.rentCat();
+			return true;
+		}
 		return false;
 	}
 
@@ -49,8 +66,21 @@ public class RentACatImpl implements RentACat {
 
 	public String listCats() {
 		// TODO
-		return "WRITE CODE FOR THIS";
-	}
+		String list = new String();
+		if (cats==null && cats.size()==0){	
+			return "";
+
+		}
+		for (Cat cat: cats){
+			int catId=cat.getId();
+			if (catAvailable(catId)==true){
+				list=list.concat(cat.toString());
+				list=list.concat("\n");
+		}
+		}
+		return list;
+		
+	}	
 
 	/**
 	 * Given an id, return true if the cat exists in the list of cats or false if
@@ -63,7 +93,25 @@ public class RentACatImpl implements RentACat {
 
 	public boolean catExists(int id) {
 		// TODO
+		if(cats!=null && cats.size()>0){
+			Cat cat= getCat(id);
+			if (cat==null){
+				return false;
+			}
+			return true;
+		}
 		return false;
+		
+		// //check is list is not null and list does not contain no cats
+		// if(catsList!=null && catsList.size()>0){
+		// 	for (Cat cat: catsList){
+		// 		if(cat.getId()==id){
+		// 			return true;
+		// 	}
+		// }
+			
+		// }
+		// return false;
 	}
 
 	/**
